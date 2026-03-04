@@ -1,6 +1,6 @@
 # Quantum MI Feedback: Bistability, Hysteresis & Cascade Suppression
 
-**Author:** Spartakos Filippidis (Norway)  
+**Author:** Nemo GR  
 **Method:** Numerical simulation (Python/QuTiP, Lindblad master equation)  
 **Status:** Amateur research, open for collaboration and critique
 
