@@ -1,6 +1,6 @@
 """
 Quantum MI Feedback: Hysteresis Experiment
-Author: Spartakos Filippidis
+Author: Nemo GR
 System: Two spin chains (N=6), Lindblad master equation
 Result: Bistability and hysteresis reproducible across 3 seeds
 """
