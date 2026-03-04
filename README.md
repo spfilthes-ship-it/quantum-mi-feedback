@@ -1,6 +1,6 @@
 # Quantum MI Feedback: Bistability, Hysteresis & Cascade Suppression
 
-**Author:** Nemo GR  
+**Author:** NemoGR  
 **Method:** Numerical simulation (Python/QuTiP, Lindblad master equation)  
 **Status:** Amateur research, open for collaboration and critique
 
@@ -15,47 +15,48 @@ g_eff = g0 + α · tanh(β · m)
 ```
 
 where `m` is exponential memory of MI between subsystems.  
-Decoherence modeled via Lindblad operators.
-
----
-
-## System
-
-- Two spin chains (A and B), 3 qubits each (N=6 total)
-- Random ZZ coupling bridge between chains
-- Adaptive bridge: stronger when subsystems share more information
-- Environment: amplitude damping on all qubits
+Decoherence modeled via Lindblad operators (QuTiP mesolve).
 
 ---
 
 ## Results
 
-### 1. Activation Threshold (α ≈ 3.5)
-Below α ≈ 3.5, MI ≈ 0 regardless of initial state.  
-Above threshold: sharp discontinuous jump in MI.  
-Consistent with first-order dissipative phase transition.
+### 1. Hysteresis — 3 Independent Seeds
 
-### 2. Bistability (α ∈ [1.4, 3.5])
-Same parameters → two different stable MI states depending on history.  
-System remembers where it came from.
+Same model, three different random bridge configurations.  
+Loop area 0.30–0.39 nats in all cases.
 
-### 3. Hysteresis (3 independent seeds)
-Sweeping α up then down produces non-overlapping MI curves.  
-Loop area: 0.30–0.39 nats across seeds 137, 42, 999.  
-Effect is structural, not seed-specific.
+![Seed 137](hysteresis_seed137.png)
+![Seed 42](hysteresis_seed42.png)
+![Seed 999](hysteresis_seed999.png)
 
-### 4. Asymmetric Relaxation
-After a decoherence strike, the high-MI state (memory state) requires  
-stronger feedback to recover than the cold-start state.  
-Recovery threshold: α ≈ 2.3 (memory) vs α ≈ 1.8 (cold).
+---
 
-### 5. Cascade Suppression (A→B→C chain)
-Three chains A, B, C with two adaptive bridges (AB and BC).  
-**Unexpected finding:** MI_BC with A present ≈ 0.10 nats.  
-MI_BC without A (isolated) ≈ 0.42 nats — **4x increase**.  
-Subsystem A acts as a competing information sink,  
-suppressing BC correlations through nonlinear feedback competition.  
-Related to ancilla-induced disentangling but via active adaptive coupling.
+### 2. Relaxation After Strike
+
+After a decoherence strike, the high-MI (memory) state requires  
+stronger feedback to recover than the cold-start state.
+
+![Relaxation](relaxation_test.png)
+
+---
+
+### 3. Cascade Suppression A→B→C
+
+Three chains. Both AB and BC bridges active.  
+**Finding:** MI_AB ≈ 0, MI_BC shows hysteresis.  
+A acts as competing information sink.
+
+![Cascade N9](cascade_N9_sequential.png)
+
+---
+
+### 4. BC Without A — 4x Increase
+
+Removing A entirely: MI_BC jumps from 0.10 to 0.42 nats.  
+B and C form autonomous system. A is a parasite.
+
+![BC without AB](BC_without_AB.png)
 
 ---
 
@@ -67,9 +68,9 @@ Related to ancilla-induced disentangling but via active adaptive coupling.
 | β | 5.0 | Feedback steepness |
 | g0 | 0.02 | Base coupling |
 | γ | 0.7 | Z2 symmetry breaking |
-| decoherence | 0.04 | Amplitude damping rate |
-| dt | 1.0 | Time step (mesolve) |
-| steps/point | 30 | Thermalization steps |
+| decoherence | 0.04 | Amplitude damping |
+| dt | 1.0 | Time step |
+| steps/point | 30 | Thermalization |
 
 ---
 
@@ -84,16 +85,15 @@ pip install qutip numpy matplotlib
 
 | File | Description |
 |------|-------------|
-| `hysteresis.py` | Main hysteresis scan (3 seeds) |
-| `cascade_ABC.py` | Three-chain cascade experiment |
-| `relaxation.py` | Relaxation after decoherence strike |
+| `hysteresis.py` | Main hysteresis scan |
+| `cascade_ABC.py` | Three-chain cascade |
 
 ---
 
 ## Open Questions
 
-1. Is the bistability here a genuine dissipative phase transition or a crossover?
-2. Does the cascade suppression mechanism differ qualitatively from passive ancilla-induced disentangling?
+1. Is the bistability a genuine dissipative phase transition or crossover?
+2. Does cascade suppression differ from passive ancilla-induced disentangling?
 3. Does the effect survive at N_sub = 4?
 
 ---
@@ -102,5 +102,3 @@ pip install qutip numpy matplotlib
 
 Open to feedback from physicists.  
 If you know related literature — please open an Issue.
-
-github: spfilthes-ship-it
